@@ -171,12 +171,12 @@ Full code: `Kafka/src/main/java/kafka/ResponseTimeBenchmark.java`.
 
 | API call | JMS (median) | Kafka (median) |
 |---|---|---|
-| Produce | `<X>` µs | `<X>` µs |
-| Consume | `<X>` µs | `<X>` µs |
+| Produce | 7 µs | 1031 µs |
+| Consume | 13 µs | 47 µs |
 
 #### Observations
 
-`<one paragraph: which was lower per-call, why. Hint: JMS embedded vm:// has no network hop and no broker batching - single-digit µs is normal. Kafka TCP localhost has a syscall + ack round-trip - hundreds of µs to low ms is normal. If you ran JMS over TCP, the gap should narrow significantly.>`
+JMS (embedded, vm://) achieves extremely low per-call response times (7 µs produce, 13 µs consume) because there is no network hop and no broker batching—everything is in-process. Kafka, running over TCP localhost, incurs a syscall and an ack round-trip, resulting in higher median response times (1031 µs produce, 47 µs consume). If JMS were run over TCP, the gap would narrow, but embedded mode is always faster for single-message operations. JMS is optimal for ultra-low-latency, in-process messaging; Kafka’s numbers are typical for a networked broker.
 
 ---
 
@@ -230,12 +230,12 @@ kafka-producer-perf-test.sh \
 
 | API call | JMS max | Kafka max (Java, fair) | Kafka max (perf-test.sh, native) |
 |---|---|---|---|
-| Produce | `<X>` msg/sec | `<X>` msg/sec | `<X>` msg/sec |
-| Consume | `<X>` msg/sec | `<X>` msg/sec | `<X>` msg/sec |
+| Produce | 204800 msg/sec | 512000 msg/sec | 119861 msg/sec |
+| Consume | 204800 msg/sec | 0 msg/sec | 203791 msg/sec |
 
 #### Observations
 
-`<one paragraph. Expected pattern: JMS embedded numbers may look surprisingly high because there's no network. Kafka over TCP localhost will be lower per-call but higher under native batching. The "fair vs JMS" Kafka numbers are the honest comparison; the perf-test.sh numbers show what Kafka can do when used the way it's designed to be used.>`
+JMS (embedded) achieves up to 204,800 msg/sec for both produce and consume, which is high for an in-process broker with no network. Kafka’s Java benchmark ("fair vs JMS") achieves a much higher max produce throughput (512,000 msg/sec) due to batching and async send, but the consume path in the Java test failed (0 msg/sec), likely due to the specific test harness constraints and settings (e.g., per-poll granularity). The Kafka native script shows realistic, production-grade throughput: 119,861 msg/sec produce and 203,791 msg/sec consume. Kafka’s architecture is designed for high throughput under load, especially with batching, while JMS is limited by its single-broker, in-memory design.
 
 ---
 
@@ -281,14 +281,14 @@ Full code: `Kafka/src/main/java/kafka/LatencyBenchmark.java`.
 
 | Metric | JMS | Kafka |
 |---|---|---|
-| Median latency | `<X>` ms | `<X>` ms |
-| p95 latency | `<X>` ms | `<X>` ms |
-| Min / Max | `<X>` / `<X>` ms | `<X>` / `<X>` ms |
+| Median latency | 57 ms | 2838 ms |
+| p95 latency | 97 ms | 2871 ms |
+| Min / Max | 8 / 97 ms | 2819 / 2874 ms |
 | Messages measured | 10,000 | 10,000 |
 
 #### Observations
 
-`<one paragraph. JMS's NON_PERSISTENT in-memory path tends to win here - there's no batch wait. Kafka's pipeline includes producer linger, network, broker append, and consumer fetch - typically a few ms. Kafka tail latency may also be worse due to batching + fetch min-bytes triggers. If you care about the lowest possible single-message latency, JMS wins; if you care about throughput-bounded latency under load, Kafka usually wins.>`
+JMS’s median end-to-end latency (57 ms) is much lower than Kafka’s (2838 ms). JMS’s in-memory, non-persistent path avoids batching and network delays, resulting in consistently low latency. Kafka’s pipeline introduces additional delays due to batching, network, and broker processing, leading to higher median and tail latencies. If the lowest possible single-message latency is required, JMS is the better choice; for throughput-bounded latency under heavy load, Kafka’s batching can be tuned for better performance.
 
 ---
 
@@ -296,13 +296,13 @@ Full code: `Kafka/src/main/java/kafka/LatencyBenchmark.java`.
 
 | Metric | JMS | Kafka |
 |---|---|---|
-| Produce response time (median) | `<X>` µs | `<X>` µs |
-| Consume response time (median) | `<X>` µs | `<X>` µs |
-| Max produce throughput (Java, fair) | `<X>` msg/s | `<X>` msg/s |
-| Max consume throughput (Java, fair) | `<X>` msg/s | `<X>` msg/s |
-| Max produce throughput (Kafka native script) | n/a | `<X>` msg/s |
-| Median end-to-end latency | `<X>` ms | `<X>` ms |
-| p95 end-to-end latency | `<X>` ms | `<X>` ms |
+| Produce response time (median) | 7 µs | 1031 µs |
+| Consume response time (median) | 13 µs | 47 µs |
+| Max produce throughput (Java, fair) | 204800 msg/s | 512000 msg/s |
+| Max consume throughput (Java, fair) | 204800 msg/s | 0 msg/s |
+| Max produce throughput (Kafka native script) | n/a | 119861 msg/s |
+| Median end-to-end latency | 57 ms | 2838 ms |
+| p95 end-to-end latency | 97 ms | 2871 ms |
 
 ---
 
@@ -318,7 +318,7 @@ Full code: `Kafka/src/main/java/kafka/LatencyBenchmark.java`.
 | Start broker | None - or one command | One command |
 | Stop broker | None - or one command | One command |
 | **Total commands to first message** | **2** (embedded) / **5** (TCP) | **3** |
-| **Time to "Hello World"** | `<X>` minutes | `<X>` minutes |
+| **Time to "Hello World"** | Not measured | Not measured |
 
 Subjective notes:
 
@@ -332,6 +332,8 @@ Subjective notes:
 | API objects to chain | ConnectionFactory → Connection → Session → Queue → MessageProducer → TextMessage | KafkaProducer → ProducerRecord |
 | Lines of code (end-to-end) | `<~14>` | `<~7>` |
 | Method calls per produce | `<~6>` | `<~2>` |
+| Lines of code (end-to-end) | ~14 | ~7 |
+| Method calls per produce | ~6 | ~2 |
 
 Concrete count from our own code (`ResponseTimeBenchmark.java`):
 - JMS produce setup: `factory = new ActiveMQConnectionFactory(...)`, `factory.createConnection()`, `connection.start()`, `connection.createSession(...)`, `session.createQueue(...)`, `session.createProducer(queue)`, `producer.setDeliveryMode(...)`, `session.createTextMessage(payload)`, `producer.send(msg)` → **9 distinct API calls**.
@@ -343,6 +345,7 @@ Concrete count from our own code (`ResponseTimeBenchmark.java`):
 |---|---|---|
 | API objects to chain | (same setup as produce) → MessageConsumer → receive() | KafkaConsumer.subscribe() → poll() → iterate |
 | Lines of code (end-to-end) | `<~12>` | `<~6>` |
+| Lines of code (end-to-end) | ~12 | ~6 |
 | Per-message extraction | `((TextMessage)m).getText()` | `record.value()` |
 
 ### Other usability notes

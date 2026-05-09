@@ -4,15 +4,15 @@ Runs      : 1000
 Payload   : 1 KB
 
 --- Produce response time (per send().get() call) ---
-  Median : 1031 µs  (1.031 ms)
-  Min    : 648 µs
-  Max    : 43712 µs
+  Median : 2335 µs  (2.335 ms)
+  Min    : 941 µs
+  Max    : 117682 µs
 
 --- Consume response time (per poll() returning 1 record) ---
-  Median : 47 µs  (0.047 ms)
-  Min    : 20 µs
-  Max    : 3695685 µs
+  Median : 83 µs  (0.083 ms)
+  Min    : 18 µs
+  Max    : 3214280 µs
 
 === SUMMARY (copy to report) ===
-  Kafka produce response time (median): 1031 µs
-  Kafka consume response time (median): 47 µs
+  Kafka produce response time (median): 2335 µs
+  Kafka consume response time (median): 83 µs

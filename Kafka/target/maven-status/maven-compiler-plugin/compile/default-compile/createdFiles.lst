@@ -1,4 +1,4 @@
 kafka/ThroughputBenchmark.class
-kafka/LatencyBenchmark.class
 kafka/ResponseTimeBenchmark.class
+kafka/LatencyBenchmark.class
 kafka/KafkaHelper.class

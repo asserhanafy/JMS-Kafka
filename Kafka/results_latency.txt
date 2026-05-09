@@ -7,7 +7,7 @@ Producer done.
 
 === SUMMARY (copy to report) ===
   Messages measured       : 10000
-  Kafka median latency    : 2838 ms
-  Kafka min latency       : 2819 ms
-  Kafka max latency       : 2874 ms
-  Kafka p95 latency       : 2871 ms
+  Kafka median latency    : 2825 ms
+  Kafka min latency       : 2810 ms
+  Kafka max latency       : 2899 ms
+  Kafka p95 latency       : 2859 ms

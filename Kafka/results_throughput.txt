@@ -15,16 +15,29 @@ Bootstrap : localhost:9092
   -> Max PRODUCE throughput observed: 512000 msg/sec
 
 ── CONSUME Throughput ──
-  X =    1000 msg/sec  ->  FAILED
-  -> Max CONSUME throughput observed: 0 msg/sec
+  X =     100 msg/sec  ->  OK
+  X =     200 msg/sec  ->  OK
+  X =     400 msg/sec  ->  OK
+  X =     800 msg/sec  ->  OK
+  X =    1600 msg/sec  ->  OK
+  X =    3200 msg/sec  ->  OK
+  X =    6400 msg/sec  ->  OK
+  X =   12800 msg/sec  ->  OK
+  X =   25600 msg/sec  ->  OK
+  X =   51200 msg/sec  ->  OK
+  X =  102400 msg/sec  ->  OK
+  X =  204800 msg/sec  ->  FAILED
+  -> Max CONSUME throughput observed: 102400 msg/sec
 
 === SUMMARY (copy to report) ===
   Kafka max produce throughput (Java, sync, no batching): 512000 msg/sec
-  Kafka max consume throughput (Java, max.poll.records=1): 0 msg/sec
-Created topic perf-test.
+  Kafka max consume throughput (Java, max.poll.records=1): 102400 msg/sec
 Option --producer-props has been deprecated and will be removed in a future version. Use --command-property instead.
-527953 records sent, 105590.6 records/sec (100.70 MB/sec), 267.7 ms avg latency, 535.0 ms max latency.
-1000000 records sent, 119860.961285 records/sec (114.31 MB/sec), 249.88 ms avg latency, 535.00 ms max latency, 232 ms 50th, 334 ms 95th, 526 ms 99th, 534 ms 99.9th.
+262225 records sent, 52445.0 records/sec (50.02 MB/sec), 481.1 ms avg latency, 688.0 ms max latency.
+226736 records sent, 45347.2 records/sec (43.25 MB/sec), 720.7 ms avg latency, 875.0 ms max latency.
+255872 records sent, 51174.4 records/sec (48.80 MB/sec), 634.2 ms avg latency, 708.0 ms max latency.
+217504 records sent, 43500.8 records/sec (41.49 MB/sec), 745.8 ms avg latency, 892.0 ms max latency.
+1000000 records sent, 47431.579946 records/sec (45.23 MB/sec), 645.94 ms avg latency, 937.00 ms max latency, 652 ms 50th, 854 ms 95th, 895 ms 99th, 935 ms 99.9th.
 Warning: --messages is deprecated. Use --num-records instead.
 start.time, end.time, data.consumed.in.MB, MB.sec, data.consumed.in.nMsg, nMsg.sec, rebalance.time.ms, fetch.time.ms, fetch.MB.sec, fetch.nMsg.sec
-2026-05-09 10:54:13:520, 2026-05-09 10:54:18:427, 953.6743, 194.3498, 1000000, 203790.5034, 3355, 1552, 614.4809, 644329.8969
+2026-05-09 11:57:23:784, 2026-05-09 11:57:31:610, 954.0787, 121.9114, 1000424, 127833.3759, 3565, 4261, 223.9096, 234786.2004

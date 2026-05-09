@@ -4,27 +4,26 @@
  INFO | Starting Temp Data Store
  INFO | Starting Job Scheduler Store
  INFO | Persistence Adapter successfully started
- INFO | Apache ActiveMQ 5.18.3 (localhost, ID:G7-7500-38065-1778290353760-0:1) is starting
- INFO | Apache ActiveMQ 5.18.3 (localhost, ID:G7-7500-38065-1778290353760-0:1) started
+ INFO | Apache ActiveMQ 5.18.3 (localhost, ID:mohammed-ASUSLaptop-Q540VJ-39737-1778326991324-0:1) is starting
+ INFO | Apache ActiveMQ 5.18.3 (localhost, ID:mohammed-ASUSLaptop-Q540VJ-39737-1778326991324-0:1) started
  INFO | For help or more information please see: http://activemq.apache.org
- WARN | Temporary Store limit is 51200 mb (current store usage is 0 mb). The data directory: /home/asserhanafy/term8/JMS-Kafka/JMS only has 28092 mb of usable space. - resetting to maximum available disk space: 28092 mb
  INFO | Connector vm://localhost started
 Purged 0 old messages.
 
 --- Produce Response Time ---
-  Median : 7 µs
-  Min    : 4 µs
-  Max    : 122 µs
+  Median : 18 µs
+  Min    : 6 µs
+  Max    : 1959 µs
 
  INFO | Connector vm://localhost stopped
- INFO | Apache ActiveMQ 5.18.3 (localhost, ID:G7-7500-38065-1778290353760-0:1) is shutting down
- INFO | Apache ActiveMQ 5.18.3 (localhost, ID:G7-7500-38065-1778290353760-0:1) uptime 0.561 seconds
- INFO | Apache ActiveMQ 5.18.3 (localhost, ID:G7-7500-38065-1778290353760-0:1) is shutdown
+ INFO | Apache ActiveMQ 5.18.3 (localhost, ID:mohammed-ASUSLaptop-Q540VJ-39737-1778326991324-0:1) is shutting down
+ INFO | Apache ActiveMQ 5.18.3 (localhost, ID:mohammed-ASUSLaptop-Q540VJ-39737-1778326991324-0:1) uptime 1.072 seconds
+ INFO | Apache ActiveMQ 5.18.3 (localhost, ID:mohammed-ASUSLaptop-Q540VJ-39737-1778326991324-0:1) is shutdown
 --- Consume Response Time ---
-  Median : 13 µs
-  Min    : 4 µs
-  Max    : 1937 µs
+  Median : 20 µs
+  Min    : 5 µs
+  Max    : 8933 µs
 
 === SUMMARY ===
-  Produce response time (median): 7 µs
-  Consume response time (median): 13 µs
+  Produce response time (median): 18 µs
+  Consume response time (median): 20 µs

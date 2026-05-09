@@ -24,7 +24,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ThroughputBenchmark {
 
-    private static final int START_THROUGHPUT = 1_000;
+    private static final int START_THROUGHPUT_PRODUCE = 1_000;
+    private static final int START_THROUGHPUT_CONSUME = 100;
     private static final int MAX_THROUGHPUT   = 512_000;
     private static final int RAMP_FACTOR      = 2;
 
@@ -46,7 +47,7 @@ public class ThroughputBenchmark {
 
     static int findMax(String mode) throws Exception {
         int last = 0;
-        int X = START_THROUGHPUT;
+        int X = "CONSUME".equals(mode) ? START_THROUGHPUT_CONSUME : START_THROUGHPUT_PRODUCE;
         while (X <= MAX_THROUGHPUT) {
             boolean ok = runTrial(X, mode);
             System.out.printf("  X = %7d msg/sec  ->  %s%n", X, ok ? "OK" : "FAILED");
@@ -99,9 +100,18 @@ public class ThroughputBenchmark {
             try (KafkaConsumer<String, String> consumer =
                          KafkaHelper.createConsumer(KafkaHelper.newGroupId(), 1)) {
                 consumer.subscribe(Collections.singleton(KafkaHelper.TOPIC));
+
+                // Warm-up: Kafka needs at least one poll() to join the group and
+                // get partition assignment. JMS setup cost is paid before the
+                // timed receive() loop, so we do the same here.
+                long warmupDeadline = System.currentTimeMillis() + 3_000;
+                while (consumer.assignment().isEmpty() && System.currentTimeMillis() < warmupDeadline) {
+                    consumer.poll(Duration.ofMillis(50));
+                }
+
                 long deadline = System.currentTimeMillis() + 1_200;
                 while (received.get() < X && System.currentTimeMillis() < deadline) {
-                    ConsumerRecords<String, String> recs = consumer.poll(Duration.ofMillis(500));
+                    ConsumerRecords<String, String> recs = consumer.poll(Duration.ofMillis(50));
                     if (recs.isEmpty()) {
                         // No record available yet - but we said X were prefilled, so this
                         // counts as an error if the deadline hits before we get them all.
