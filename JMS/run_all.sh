@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ================================================================
-# run_all.sh — JMS Benchmark Runner (Ubuntu 24.04)
+# run_all.sh - JMS Benchmark Runner (Ubuntu 24.04)
 # ================================================================
 set -e
 

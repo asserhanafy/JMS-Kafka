@@ -1,4 +1,4 @@
-# JMS Benchmark — Member 2
+# JMS Benchmark - Member 2
 
 Lab 4: JMS vs Kafka | CSE-4E3, Alexandria University  
 **Your responsibility**: ActiveMQ setup + JMS produce/consume code + all 3 performance metrics.
@@ -67,7 +67,7 @@ java -cp target/jms-benchmark-1.0-SNAPSHOT.jar jms.LatencyBenchmark
 | `ResponseTimeBenchmark.java` | Produce & Consume response time | Median of 1000 runs, 1 KB messages |
 | `ThroughputBenchmark.java` | Max produce & consume throughput | Exponential ramp-up (×2), T − 0.2T sleep |
 | `LatencyBenchmark.java` | Producer→Consumer median latency | 10 000 messages, timestamp embedded in message property |
-| `JMSHelper.java` | Shared broker connection logic | — |
+| `JMSHelper.java` | Shared broker connection logic | - |
 
 ---
 
@@ -90,7 +90,7 @@ Paste these into Member 4's report template.
 
 ---
 
-## Notes for Report (Usability — help for Member 3)
+## Notes for Report (Usability - help for Member 3)
 
 **Setup steps counted**:
 1. Install Java
