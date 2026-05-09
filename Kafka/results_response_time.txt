@@ -1,0 +1,18 @@
+=== Kafka Response Time Benchmark ===
+Bootstrap : localhost:9092
+Runs      : 1000
+Payload   : 1 KB
+
+--- Produce response time (per send().get() call) ---
+  Median : 1031 µs  (1.031 ms)
+  Min    : 648 µs
+  Max    : 43712 µs
+
+--- Consume response time (per poll() returning 1 record) ---
+  Median : 47 µs  (0.047 ms)
+  Min    : 20 µs
+  Max    : 3695685 µs
+
+=== SUMMARY (copy to report) ===
+  Kafka produce response time (median): 1031 µs
+  Kafka consume response time (median): 47 µs

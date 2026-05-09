@@ -1,0 +1,30 @@
+=== Kafka Maximum Throughput Benchmark (Java, fair vs JMS) ===
+Bootstrap : localhost:9092
+
+── PRODUCE Throughput ──
+  X =    1000 msg/sec  ->  OK
+  X =    2000 msg/sec  ->  OK
+  X =    4000 msg/sec  ->  OK
+  X =    8000 msg/sec  ->  OK
+  X =   16000 msg/sec  ->  OK
+  X =   32000 msg/sec  ->  OK
+  X =   64000 msg/sec  ->  OK
+  X =  128000 msg/sec  ->  OK
+  X =  256000 msg/sec  ->  OK
+  X =  512000 msg/sec  ->  OK
+  -> Max PRODUCE throughput observed: 512000 msg/sec
+
+── CONSUME Throughput ──
+  X =    1000 msg/sec  ->  FAILED
+  -> Max CONSUME throughput observed: 0 msg/sec
+
+=== SUMMARY (copy to report) ===
+  Kafka max produce throughput (Java, sync, no batching): 512000 msg/sec
+  Kafka max consume throughput (Java, max.poll.records=1): 0 msg/sec
+Created topic perf-test.
+Option --producer-props has been deprecated and will be removed in a future version. Use --command-property instead.
+527953 records sent, 105590.6 records/sec (100.70 MB/sec), 267.7 ms avg latency, 535.0 ms max latency.
+1000000 records sent, 119860.961285 records/sec (114.31 MB/sec), 249.88 ms avg latency, 535.00 ms max latency, 232 ms 50th, 334 ms 95th, 526 ms 99th, 534 ms 99.9th.
+Warning: --messages is deprecated. Use --num-records instead.
+start.time, end.time, data.consumed.in.MB, MB.sec, data.consumed.in.nMsg, nMsg.sec, rebalance.time.ms, fetch.time.ms, fetch.MB.sec, fetch.nMsg.sec
+2026-05-09 10:54:13:520, 2026-05-09 10:54:18:427, 953.6743, 194.3498, 1000000, 203790.5034, 3355, 1552, 614.4809, 644329.8969

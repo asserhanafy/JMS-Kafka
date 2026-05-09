@@ -1,0 +1,13 @@
+=== Kafka Median Latency Benchmark ===
+Bootstrap : localhost:9092
+Messages  : 10000
+
+Consumer ready. Producing 10000 messages...
+Producer done.
+
+=== SUMMARY (copy to report) ===
+  Messages measured       : 10000
+  Kafka median latency    : 2838 ms
+  Kafka min latency       : 2819 ms
+  Kafka max latency       : 2874 ms
+  Kafka p95 latency       : 2871 ms
